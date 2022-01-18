@@ -30,6 +30,7 @@ def _register():
                 if Datos == 'NOMBRE':
                     dict_userPassword[Datos] = input('Ingresa una contraseña: ')
                     workers.append(dict_userPassword , ignore_index=True)
+                    workers.to_exel()
             else:
                 break
         users.append(dicc_User , ignore_index= True )
