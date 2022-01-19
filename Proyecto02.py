@@ -66,6 +66,5 @@ def login():
 
 
     
-#User = input('Usuario: ')
-#login()
-print(HoraTurno())
+User = input('Usuario: ')
+login()
