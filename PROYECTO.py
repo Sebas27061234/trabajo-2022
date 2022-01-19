@@ -1,4 +1,3 @@
-from operator import index
 import pandas as pd
 import datetime as dt
 ruta_Usuarios = 'Hospital.xlsx'
