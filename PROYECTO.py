@@ -7,6 +7,10 @@ workers = pd.read_excel(ruta_Passwords)
 users = pd.read_excel(ruta_Usuarios)
 RegisterDate = pd.read_excel(ruta_Flujo)
 
+def overwrite_xlsx(df,dict,ruta):
+    df = df.append(dict, ignore_index=True)
+    df.to_excel(ruta, index = False)
+
 def columns(df):
     columnas = df.columns
     list_columnas = list(columnas)
@@ -33,12 +37,10 @@ def _register():
                 if Datos == 'NOMBRE':
                     dict_userPassword['NOMBRE'] = dicc_User['NOMBRE']
                     dict_userPassword['CONTRASEÑAS'] = input('Ingresa una contraseña: ')
-                    workers = workers.append(dict_userPassword , ignore_index=True )
             else:
                 break
-        users = users.append(dicc_User , ignore_index= True )
-        workers.to_excel(ruta_Passwords ,index = False)
-        users.to_excel(ruta_Usuarios ,index = False)
+        overwrite_xlsx(users,dicc_User,ruta_Usuarios)
+        overwrite_xlsx(workers,dict_userPassword,ruta_Passwords)
         _result = True
     else:
         _result = False
@@ -49,17 +51,20 @@ def HoraTurno():
     global User
     dict_RegisterDate = {}
     dict_RegisterDate['NOMBRE'] = User
-    if User in list_(RegisterDate,'Nombre'):
-        entry = dt.datetime.now()
-        dict_RegisterDate['Hora de Entrada'] = entry
-        
+    _filer = RegisterDate.loc(RegisterDate['NOMBRE'] == User)
+    overwrite_xlsx(RegisterDate,dict_RegisterDate,ruta_Flujo)
+    if 
 
-     
+        entry = dt.datetime.now()
+        dict_RegisterDate['Hora de Entrada'] = f'{entry}'
+    elif _filer[1] != '':
+        timeExit = dt.datetime.now()
+        dict_RegisterDate['Hora de Salida'] = f'{timeExit}'
+    overwrite_xlsx(RegisterDate,dict_RegisterDate,ruta_Flujo)
 
 #def pertain(User):
     
     #NombreFecha = NombreFecha.append(dict, ignore_index = True)
-
 
 def login():
     global User
@@ -75,9 +80,9 @@ def login():
             else:
                 print('Finalizando programa')
                 break
-
-
-
     
-User = input('Usuario: ')
-login()
+#User = input('Usuario: ')
+y = RegisterDate.loc[RegisterDate['NOMBRE'] == 'Jean']
+y = list(y)
+print(y)
+print(list(RegisterDate['Hora de Entrada']))
