@@ -1,20 +1,11 @@
-from operator import index
 import pandas as pd
-#ruta_Usuarios = "USERS.xlsx"
-#ruta_Datos = 'Hospital.xlsx'
-#workers = pd.read_excel(ruta_Usuarios)
-#users = pd.read_excel(ruta_Datos)
-workers_columns = ['NOMBRE','CONTRASEÑAS']
-users_columns = ['ID','DNI', 'NOMBRE', 'APELLIDO', 'EDAD', 'GENERO',
-                'VACUNA COVID','DIRECCION','CORREO','TELEFONO', 'AREA DE TRABAJO','SUELDO', 'ESTADO']
-workers = pd.DataFrame(columns = workers_columns)
-users = pd.DataFrame(columns = users_columns)
-
-excel2 = {}
-df_excel2 = pd.DataFrame(excel2)
-df_excel2.to_excel('Users2.xlsx', index = False)
-
-writter = pd.ExcelWriter('Users2.xlsx')
+import datetime as dt
+ruta_Usuarios = 'Hospital.xlsx'
+ruta_Passwords = 'USERS.xlsx'
+ruta_Flujo = 'Horaentrada.xlsx'
+workers = pd.read_excel(ruta_Passwords)
+users = pd.read_excel(ruta_Usuarios)
+RegisterDate = pd.read_excel(ruta_Flujo)
 
 def columns(df):
     columnas = df.columns
@@ -27,45 +18,55 @@ def list_(df,nombre):
     return list_filas
 
 def _register():
-    global writter
     global users
     global User
     global workers
     print('El usuario {} no existe'.format(User))
     User_Now = input('Presione R si desea registrase: ')
     if User_Now == 'R':
-        dict_User = {'ID':'' ,'DNI': '', 'NOMBRE':'' , 'APELLIDO':'' , 'EDAD':'' , 'GENERO':'',
-                'VACUNA COVID':'' ,'DIRECCION':'' ,'CORREO':'' ,'TELEFONO':'' , 'AREA DE TRABAJO':'' ,'SUELDO': '', 'ESTADO':'' }
-        dict_userPassword = {'NOMBRE':'' ,'CONTRASEÑAS':'' }
+        dicc_User = {}
+        dict_userPassword = {}
         columnas_df = columns(users)
         for Datos in columnas_df:
             if Datos != 'ESTADO' and Datos != 'SUELDO':
-                dict_User[Datos]=(input(f'Inserta {Datos}: '))
+                dicc_User[Datos] = input(f'Inserta {Datos}: ')
                 if Datos == 'NOMBRE':
-                    dict_userPassword['NOMBRE'] = dict_User[Datos]
-                    dict_userPassword['CONTRASEÑAS'] = (input('Ingresa una contraseña: '))
-                    df_userPassword = pd.DataFrame.from_dict(dict_userPassword, orient='index')
-                    df_userPassword.to_excel(writter, 'Usuarios y Contraseñas', index = False)
+                    dict_userPassword['NOMBRE'] = dicc_User['NOMBRE']
+                    dict_userPassword['CONTRASEÑAS'] = input('Ingresa una contraseña: ')
+                    workers = workers.append(dict_userPassword , ignore_index=True )
             else:
                 break
-        df_User = pd.DataFrame.from_dict(dict_User, orient='index')
+        users = users.append(dicc_User , ignore_index= True )
+        workers.to_excel(ruta_Passwords ,index = False)
+        users.to_excel(ruta_Usuarios ,index = False)
         _result = True
-        df_User.to_excel(writter,'Datos de usuarios', index = False)
-        writter.save()
-        writter.close()
-        print(dict_User)
-        print(dict_userPassword)
     else:
         _result = False
     return _result
 
+def HoraTurno():
+    global RegisterDate
+    global User
+    dict_RegisterDate = {}
+    dict_RegisterDate['NOMBRE'] = User
+    if User in list_(RegisterDate,'Nombre'):
+        entry = dt.datetime.now()
+        dict_RegisterDate['Hora de Entrada'] = entry
+        
+
+     
+
+#def pertain(User):
+    
+    #NombreFecha = NombreFecha.append(dict, ignore_index = True)
+
 
 def login():
-    global users
     global User
+    global users
     while User != '':
         if User in list_(workers,'NOMBRE'):
-            print('HOLA')#pertain()
+            #pertain(User)
             break
         else: 
             _result2 = _register()
@@ -80,4 +81,3 @@ def login():
     
 User = input('Usuario: ')
 login()
-
