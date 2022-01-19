@@ -91,8 +91,3 @@ def login():
 
 User = input('Usuario: ')
 login()
-#x = users.index[users['NOMBRE'] == User]
-#print(int(x[0])+1)
-# elif Datos == 'ID':
-# index_id = users.index[users['NOMBRE'] == User]
-#dict_User['ID'] = int(index_id[0]) +1
