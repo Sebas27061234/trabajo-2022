@@ -43,12 +43,6 @@ def _register():
         users = users.append(dict_User , ignore_index= True )
         workers.to_excel(ruta_Passwords ,index = False)
         users.to_excel(ruta_Usuarios ,index = False)
-        print(workers)
-        index = workers.index[workers['NOMBRE'] == dict_User['NOMBRE']]
-        print(index)
-        workers.at[index,'CONTRASEÑAS'] = input('Nueva contraseña: ')
-        workers.to_excel(ruta_Passwords ,index = False)
-        print(workers)
         _result = True
     else:
         _result = False
