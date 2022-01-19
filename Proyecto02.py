@@ -1,4 +1,5 @@
 import pandas as pd
+import datetime as dt
 ruta_Usuarios = "USERS.xlsx"
 ruta_Datos = 'Hospital.xlsx'
 workers = pd.read_excel(ruta_Usuarios)
@@ -28,32 +29,31 @@ def _register():
             if Datos != 'ESTADO' and Datos != 'SUELDO':
                 dicc_User[Datos] = input(f'Inserta {Datos}: ')
                 if Datos == 'NOMBRE':
-                    dict_userPassword[Datos] = input('Ingresa una contraseña: ')
-                    workers.append(dict_userPassword , ignore_index=True)
-<<<<<<< HEAD
-                   
-=======
-                    workers.to_exel()
->>>>>>> c21856a5d02bdb98df9956bc5e830b0fd108b23e
+                    dict_userPassword['NOMBRE'] = dicc_User['NOMBRE']
+                    dict_userPassword['CONTRASEÑAS'] = input('Ingresa una contraseña: ')
+                    workers = workers.append(dict_userPassword , ignore_index=True )
             else:
                 break
-        users.append(dicc_User , ignore_index= True )
+        users = users.append(dicc_User , ignore_index= True )
         _result = True
-        users.to_excel()
     else:
         _result = False
-    workers.to_excel("USERS.xlsx",index=False)
-    users.to_excel('Hospital.xlsx',index=False)
     return _result
 
+def HoraTurno():
+     horaEntrada = dt.datetime.now()
+     
+
+#def pertain(User):
+    
+    
 
 
 def login():
     global users
-    global User
     while User != '':
         if User in list_(workers,'NOMBRE'):
-            #pertain()
+            #pertain(User)
             break
         else: 
             _result2 = _register()
@@ -66,5 +66,6 @@ def login():
 
 
     
-User = input('Usuario: ')
-login()
+#User = input('Usuario: ')
+#login()
+print(HoraTurno())
