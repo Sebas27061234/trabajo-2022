@@ -1,4 +1,3 @@
-from tkinter import W
 import pandas as pd
 import datetime as dt
 ruta_Usuarios = 'Hospital.xlsx'
