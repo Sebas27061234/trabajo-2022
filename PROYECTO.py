@@ -39,6 +39,10 @@ def _register():
         users = users.append(dicc_User , ignore_index= True )
         workers.to_excel(ruta_Passwords ,index = False)
         users.to_excel(ruta_Usuarios ,index = False)
+        print(workers)
+        workers.at[1,'CONTRASEÑAS'] = input('Nueva contraseña: ')
+        workers.to_excel(ruta_Passwords ,index = False)
+        print(workers)
         _result = True
     else:
         _result = False
@@ -56,8 +60,7 @@ def HoraTurno():
 
      
 
-#def pertain(User):
-    
+#def pertain():
     #NombreFecha = NombreFecha.append(dict, ignore_index = True)
 
 
@@ -66,8 +69,10 @@ def login():
     global users
     while User != '':
         if User in list_(workers,'NOMBRE'):
-            #pertain(User)
-            break
+            Contraseña = input('Contraseña: ')
+            if Contraseña in list_(workers,'CONTRASEÑAS'):
+                #pertain()
+                break            
         else: 
             _result2 = _register()
             if _result2 == True:
