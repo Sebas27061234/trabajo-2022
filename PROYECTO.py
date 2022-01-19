@@ -40,7 +40,9 @@ def _register():
         workers.to_excel(ruta_Passwords ,index = False)
         users.to_excel(ruta_Usuarios ,index = False)
         print(workers)
-        workers.at[1,'CONTRASEÑAS'] = input('Nueva contraseña: ')
+        index = workers.index[workers['NOMBRE'] == dicc_User['NOMBRE']]
+        print(index)
+        workers.at[index,'CONTRASEÑAS'] = input('Nueva contraseña: ')
         workers.to_excel(ruta_Passwords ,index = False)
         print(workers)
         _result = True
