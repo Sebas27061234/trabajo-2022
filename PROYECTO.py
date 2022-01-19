@@ -1,11 +1,8 @@
+from operator import index
 import pandas as pd
 import datetime as dt
 ruta_Usuarios = 'Hospital.xlsx'
-ruta_Passwords = 'USERS.xlsx'
-ruta_Flujo = 'Horaentrada.xlsx'
-workers = pd.read_excel(ruta_Passwords)
 users = pd.read_excel(ruta_Usuarios)
-RegisterDate = pd.read_excel(ruta_Flujo)
 
 def columns(df):
     columnas = df.columns
@@ -20,27 +17,16 @@ def list_(df,nombre):
 def _register():
     global users
     global User
-    global workers
     print('El usuario {} no existe'.format(User))
     User_Now = input('Presione R si desea registrase: ')
     if User_Now == 'R':
-        dict_checktime = {}
         dict_User = {}
-        dict_userPassword = {}
         columnas_df = columns(users)
         for Datos in columnas_df:
-            if Datos != 'ESTADO' and Datos != 'SUELDO':
+            if Datos != 'ESTADO' and Datos != 'SUELDO' and Datos != 'Hora de Entrada' and Datos != 'Hora de Salida':
                 dict_User[Datos] = input(f'Inserta {Datos}: ')
-                if Datos == 'NOMBRE':
-                    dict_userPassword['NOMBRE'] = dict_User['NOMBRE']
-                    dict_checktime['NOMBRE'] = dict_User['NOMBRE']
-                    dict_userPassword['CONTRASEÑAS'] = input('Ingresa una contraseña: ')
-                    RegisterDate = RegisterDate.append(dict_checktime,ignore_index=True)
-                    workers = workers.append(dict_userPassword , ignore_index=True )
-            else:
-                break
+            continue
         users = users.append(dict_User , ignore_index= True )
-        workers.to_excel(ruta_Passwords ,index = False)
         users.to_excel(ruta_Usuarios ,index = False)
         _result = True
     else:
@@ -48,54 +34,42 @@ def _register():
     return _result
 
 def checktime():
+    global users
     global User
-    global RegisterDate
     houropen = dt.datetime.now()
-    index = RegisterDate.index[RegisterDate['NOMBRE'] == User] 
+    index = users.index[users['NOMBRE'] == User] 
     question  = input('Precione E para marcar su entrada\n Presione S para marcar su salida: ')
     if question == 'E':
         print(f'Su hora de entrada = {houropen}')
-        RegisterDate.at[index,'Hora de Entrada'] = houropen
-        RegisterDate.to_excel(ruta_Flujo ,index = False)
+        users.at[index,'Hora de Entrada'] = houropen
+        users.to_excel(ruta_Usuarios,index = False)
     elif question == 'S':
         print(f'Esta sera su hora de salida = {houropen}')
-        RegisterDate.at[index,'Hora de Salida'] = houropen
-        RegisterDate.to_excel(ruta_Flujo ,index = False)
+        users.at[index,'Hora de Salida'] = houropen
+        users.to_excel(ruta_Usuarios ,index = False)
     else: 
         print('Ingrese bien la clave')
-    
-    dict_RegisterDate = {}
-    dict_RegisterDate['NOMBRE'] = User
-    if User in list_(RegisterDate,'Nombre'):
-        entry = dt.datetime.now()
-        dict_RegisterDate['Hora de Entrada'] = entry
+    return True
         
 def pertain():
     global User
+    global users
     #global add_New
-    choose = input('Ingrese "E" Para Editar su Usuario\n Ingrese "M" para hora de Entrada o Salida: ')
+    choose = input('Ingrese "E" Para Editar su Usuario\n Ingrese "M" para hora de Entrada o Salida\n Si quiere volver al inicio no ingrese nada\n: ')
     while choose == 'M':
         checktime()
         choose = input('Ingrese "E" Para Editar su Usuario\n Ingrese "M" para hora de Entrada o Salida: ')
     while choose == 'E':
-        choose_value = input('Que deseas editar\n Ingrese "C" para el Correo\n Ingrese "D" para su direccion\n Ingrese "T" para su telefono\n Ingrese "P" para su Contraseña\n :  ')
+        choose_value = input('Que deseas editar\n Ingrese "C" para el Correo\n Ingrese "P" para su direccion\n Ingrese "T" para su telefono\n Ingrese "P" para su Contraseña\n :  ')
         change_list = {'C':'CORREO','D':'DIRECCION','T':'TELEFONO','P':'CONTRASEÑA'}
-        for x in change_list:
+        while choose_value in list(change_list.keys()):
             if choose_value != '':
-                if choose_value == x and choose_value != 'P':
-                    value_index = users.index[users['NOMBRE'] == User] 
-                    users.at[value_index,change_list[x]] = input('Nueva {}: '.format(change_list[x]))
-                    users.to_excel(ruta_Usuarios ,index = False)
-                elif choose_value == 'P':
-                    value_index = workers.index[workers['NOMBRE'] == User] 
-                    workers.at[value_index,change_list[x]] = input('Nueva {}: '.format(change_list[x]))
-                    workers.to_excel(ruta_Usuarios ,index = False)
-                    choose_value = input('Que deseas editar\n Ingrese "C" para el Correo\n Ingrese "D" para su direccion\n Ingrese "T" para su telefono\n Ingrese "P" para su Contraseña\n :  ')
-                else:
-                    print('Esta opcion no la agreador el administrador o no existe')
+                value_index = users.index[users['NOMBRE'] == User] 
+                users.at[value_index,change_list[choose_value]] = input('Nueva {}: '.format(change_list[choose_value]))
+                users.to_excel(ruta_Usuarios ,index = False) 
                 choose_value = input('Que deseas editar\n Ingrese "C" para el Correo\n Ingrese "D" para su direccion\n Ingrese "T" para su telefono\n Ingrese "P" para su Contraseña\n :  ')
-            elif choose_value == '':
-                choose = input('Ingrese "E" Para Editar su Usuario\n Ingrese "M" para hora de Entrada o Salida: ')
+        if choose_value == '':
+            choose = input('La informacion que desea editar no ha sido habilitada o no existe.\nIngrese M si desea salir de editar usuario: ')
     if choose == '':
         print('Volviendo al inicio......')
         User = input('Usuario: ')
@@ -105,12 +79,8 @@ def login():
     global User
     global users
     while User != '':
-        if User in list_(workers,'NOMBRE'):
-            pertain()
-            Contraseña = input('Contraseña: ')
-            if Contraseña in list_(workers,'CONTRASEÑAS'):
-                #pertain()
-                break            
+        if User in list_(users,'NOMBRE'):
+                pertain()
         else: 
             _result2 = _register()
             if _result2 == True:
@@ -118,5 +88,11 @@ def login():
             else:
                 print('Finalizando programa')
                 break
+
 User = input('Usuario: ')
 login()
+#x = users.index[users['NOMBRE'] == User]
+#print(int(x[0])+1)
+# elif Datos == 'ID':
+# index_id = users.index[users['NOMBRE'] == User]
+#dict_User['ID'] = int(index_id[0]) +1
