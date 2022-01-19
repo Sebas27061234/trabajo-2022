@@ -30,10 +30,12 @@ def _register():
                 if Datos == 'NOMBRE':
                     dict_userPassword[Datos] = input('Ingresa una contraseña: ')
                     workers.append(dict_userPassword , ignore_index=True)
+                    workers.to_excel()
             else:
                 break
         users.append(dicc_User , ignore_index= True )
         _result = True
+        users.to_excel()
     else:
         _result = False
     workers.to_excel("USERS.xlsx",index=False)
