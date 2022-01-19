@@ -88,21 +88,21 @@ def pertain():
         choose_value = input('Que deseas editar\n Ingrese "C" para el Correo\n Ingrese "D" para su direccion\n Ingrese "T" para su telefono\n Ingrese "P" para su Contraseña\n :  ')
         change_list = {'C':'CORREO','D':'DIRECCION','T':'TELEFONO','P':'CONTRASEÑA'}
         for x in change_list:
-            if choose_value == x and choose_value != 'P':
-                value_index = users.index[users['NOMBRE'] == User] 
-                users.at[value_index,change_list[x]] = input('Nueva {}: '.format(change_list[x]))
-                users.to_excel(ruta_Usuarios ,index = False)
-                choose_value = input('Que deseas editar\n Ingrese "C" para el Correo\n Ingrese "D" para su direccion\n Ingrese "T" para su telefono\n Ingrese "P" para su Contraseña\n :  ')
-            elif choose_value == 'P':
-                value_index = workers.index[workers['NOMBRE'] == User] 
-                workers.at[value_index,change_list[x]] = input('Nueva {}: '.format(change_list[x]))
-                workers.to_excel(ruta_Usuarios ,index = False)
+            if choose_value != '':
+                if choose_value == x and choose_value != 'P':
+                    value_index = users.index[users['NOMBRE'] == User] 
+                    users.at[value_index,change_list[x]] = input('Nueva {}: '.format(change_list[x]))
+                    users.to_excel(ruta_Usuarios ,index = False)
+                elif choose_value == 'P':
+                    value_index = workers.index[workers['NOMBRE'] == User] 
+                    workers.at[value_index,change_list[x]] = input('Nueva {}: '.format(change_list[x]))
+                    workers.to_excel(ruta_Usuarios ,index = False)
+                    choose_value = input('Que deseas editar\n Ingrese "C" para el Correo\n Ingrese "D" para su direccion\n Ingrese "T" para su telefono\n Ingrese "P" para su Contraseña\n :  ')
+                else:
+                    print('Esta opcion no la agreador el administrador o no existe')
                 choose_value = input('Que deseas editar\n Ingrese "C" para el Correo\n Ingrese "D" para su direccion\n Ingrese "T" para su telefono\n Ingrese "P" para su Contraseña\n :  ')
             elif choose_value == '':
                 choose = input('Ingrese "E" Para Editar su Usuario\n Ingrese "M" para hora de Entrada o Salida: ')
-            else:
-                print('Esta opcion no la agreador el administrador o no existe')
-                choose_value = input('Que deseas editar\n Ingrese "C" para el Correo\n Ingrese "D" para su direccion\n Ingrese "T" para su telefono\n Ingrese "P" para su Contraseña\n :  ')
     if choose == '':
         print('Volviendo al inicio......')
         User = input('Usuario: ')
