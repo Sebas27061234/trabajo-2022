@@ -43,6 +43,12 @@ def _register():
         users = users.append(dict_User , ignore_index= True )
         workers.to_excel(ruta_Passwords ,index = False)
         users.to_excel(ruta_Usuarios ,index = False)
+        print(workers)
+        index = workers.index[workers['NOMBRE'] == dict_User['NOMBRE']]
+        print(index)
+        workers.at[index,'CONTRASEÑAS'] = input('Nueva contraseña: ')
+        workers.to_excel(ruta_Passwords ,index = False)
+        print(workers)
         _result = True
     else:
         _result = False
@@ -65,7 +71,12 @@ def checktime():
     else: 
         print('Ingrese bien la clave')
     
-
+    dict_RegisterDate = {}
+    dict_RegisterDate['NOMBRE'] = User
+    if User in list_(RegisterDate,'Nombre'):
+        entry = dt.datetime.now()
+        dict_RegisterDate['Hora de Entrada'] = entry
+        
 def pertain():
     global User
     #global add_New
@@ -96,13 +107,17 @@ def pertain():
         print('Volviendo al inicio......')
         User = input('Usuario: ')
         return User
-
+        
 def login():
     global User
     global users
     while User != '':
         if User in list_(workers,'NOMBRE'):
             pertain()
+            Contraseña = input('Contraseña: ')
+            if Contraseña in list_(workers,'CONTRASEÑAS'):
+                #pertain()
+                break            
         else: 
             _result2 = _register()
             if _result2 == True:
