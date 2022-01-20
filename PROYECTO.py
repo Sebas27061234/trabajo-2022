@@ -1,5 +1,6 @@
 import pandas as pd
 import datetime as dt
+import matplotlib.pyplot as plt
 import webbrowser
 ruta_Usuarios = 'Hospital.xlsx'
 ruta_UsuariosAdmin = 'CONTROLCENTER.xlsx'
@@ -104,19 +105,27 @@ def edit_Users():
                 users.to_excel(ruta_Usuarios ,index = False) 
                 gg = input(f'Que columna desea modificar: ')
             elif gg == '':
-                    pregunt = input('Ingrese "V" si desea ver toda la informacion de los trabajodores\nIngrese "E" si desea editar la informacion de los trabajodores\n Ingrese "A" si desea analizar: ')
+                pregunt = input('Ingrese "O" si desea ver solo la informacion de un solo trabaajor\nIngrese "V" si desea ver toda la informacion de los trabajodores\nIngrese "E" si desea editar la informacion de los trabajodores\n Ingrese "A" si desea analizar: ')
         return pregunt
 
-def format_html(df):
-    df.to_html('Tabla.html',index=None,header=True)  
-    file = open('Tabla.html', 'a')
+def format_html(df,x):
+    df.to_html(f'{x}.html',index=None,header=True)  
+    file = open(f'{x}.html', 'a')
     content = '''
     <head>
         <link rel="stylesheet" href="estilos.css">
     </head>'''
     file.write(content)
     file.close()
-    webbrowser.open('Tabla.html',new=0, autoraise=True)
+    webbrowser.open(f'{x}.html',new=0, autoraise=True)
+
+def look_User():
+    global users
+    nameWoker =input('Ingrese el nombre del trabajador: ') 
+    one_User = users.loc[users['NOMBRE']==nameWoker]
+    format_html(one_User,'Tablaone')
+    pregunt = input('Ingrese "O" si desea ver solo la informacion de un solo trabaajor\nIngrese "V" si desea ver toda la informacion de los trabajodores\nIngrese "E" si desea editar la informacion de los trabajodores\n Ingrese "A" si desea analizar: ')
+    return pregunt
 
 def analisisDatos():
     print('hola')
@@ -126,13 +135,15 @@ def _admin():
     global User
     global pregunt
     global users
-    pregunt = input('Ingrese "V" si desea ver toda la informacion de los trabajodores\nIngrese "E" si desea editar la informacion de los trabajodores\n Ingrese "A" si desea analizar: ')
+    pregunt = input('Ingrese "O" si desea ver solo la informacion de un solo trabaajor\nIngrese "V" si desea ver toda la informacion de los trabajodores\nIngrese "E" si desea editar la informacion de los trabajodores\n Ingrese "A" si desea analizar: ')
     if pregunt == 'V':
-        format_html(users)
+        format_html(users,'Tabla')
     elif pregunt == 'E':
         edit_Users()
     elif pregunt == 'A':
         analisisDatos()
+    elif pregunt == 'O':
+        look_User()
     elif pregunt == '':
         print('Clave no correcta.....\nRetornando a INICIO....')
         User = input('Usuario: ')
