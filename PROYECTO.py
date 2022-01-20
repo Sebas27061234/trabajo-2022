@@ -118,7 +118,8 @@ def format_html(df):
     file.close()
     webbrowser.open('Tabla.html',new=0, autoraise=True)
 
-#def analisisDatos()
+def analisisDatos():
+    print('hola')
 
 def _admin():
     global pregunt
