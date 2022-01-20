@@ -43,7 +43,6 @@ def _reception():
         DNI = int(input('Ingrese DNI del Paciente: '))
         columnas_df = columns(patients)
         if DNI in list_(patients,'DNI'):
-            lis_t = []
             for Datos in columnas_df:
                 if Datos =='FECHA' or Datos =='HORA CITA':
                     dict_patients[Datos] = input(f'Inserta {Datos}: ')
@@ -54,12 +53,11 @@ def _reception():
                     espec = input('Que especializacion desea: ')
                     Doct_ = users.loc[users['ESPECIALIDAD'] == f'{espec}']
                     print(Doct_)
-                    #lis_doc = list_(Doct_,'MEDICO')
-                    #print('Estos son doctores que hay en especialización {}'.format(lis_doc))
+                    lis_doc = list_(Doct_,'MEDICO')
+                    print('Estos son doctores que hay en especialización {}'.format(lis_doc))
                     doc = input('Cual doctor: ')
-                    lis_t.append(doc)
-                    patients.at[int(_index[0]),'ESPECIALIDAD'] = espec
-                    patients.at[int(_index[0]),'MEDICO'] = doc
+                    patients.at[_index[0],'ESPECIALIDAD'] = espec
+                    patients.at[_index[0],'MEDICO'] = doc
                     patients.to_excel(ruta_patients,index = False) 
     elif _patients == '':
         User = input('Usuario: ')
