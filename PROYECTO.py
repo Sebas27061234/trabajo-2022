@@ -87,7 +87,17 @@ def pertain():
 
 def format_html(df):
     df.to_html('Tabla.html',index=None,header=True)  
-    webbrowser.open('Tabla.html', new=0, autoraise=True)
+    file = open('Tabla.html', 'a')
+    content = '''
+    <head>
+        <link rel="stylesheet" href="estilos.css">
+    </head>'''
+    file.write(content)
+    file.close()
+
+    webbrowser.open('Tabla.html',new=0, autoraise=True)
+    
+
         
 def _admin():
     y = input('Ingrese "V" si desea ver toda la informacion de los trabajodores\nIngrese "E" si desea editar la informacion de los trabajodores\n Ingrese "A" si desea analizar: ')
@@ -119,6 +129,7 @@ def login():
     if User == '':
         print('Que intentabas ingresar......\nFinalizando Programa....')
 
+format_html(users)
 User = input('Usuario: ')
 password = input('Ingresa tu Contraseña: ')
 login()
