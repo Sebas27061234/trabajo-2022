@@ -1,10 +1,16 @@
+from csv import list_dialects
+from pydoc import doc
 import pandas as pd
 import datetime as dt
 import webbrowser
 ruta_Usuarios = 'Hospital.xlsx'
 ruta_UsuariosAdmin = 'CONTROLCENTER.xlsx'
+ruta_patients = 'Base_datos_pacientes.xlsx'
+ruta_reception = 'Reception.xlsx'
 users = pd.read_excel(ruta_Usuarios)
 admin = pd.read_excel(ruta_UsuariosAdmin)
+patients = pd.read_excel(ruta_patients)
+reception = pd.read_excel(ruta_reception)
 passwordRegistration = 'PythonBasico2022pedrorotta'
 
 def columns(df):
@@ -21,6 +27,47 @@ def format_html(df):
     df.to_html('Tabla.html',index=None,header=True)
     webbrowser.open('Tabla.html', new=0, autoraise=True)
 
+def _reception():
+    global users
+    global patients
+    dict_patients = {}
+    _patients = input('Ingrese "S" para agregar un nuevo paciente\nIngrese "C" para crear una cita medica\n..De ENTER si quiere retornar: ')
+    if _patients == 'S':
+        columnas_df = columns(patients)
+        for Datos in columnas_df:
+            if Datos != 'MEDICO' and Datos != 'ESPECIALIDAD' and Datos !='FECHA' and Datos !='HORA CITA':
+                dict_patients[Datos] = input(f'Inserta {Datos}: ')
+        patients = patients.append(dict_patients,ignore_index=True)
+        _patients = input('De ENTER si quiere retornar: ')
+    elif _patients == 'C':
+        DNI = int(input('Ingrese DNI del Paciente: '))
+        columnas_df = columns(patients)
+        if DNI in list_(patients,'DNI'):
+            lis_t = []
+            for Datos in columnas_df:
+                if Datos =='FECHA' or Datos =='HORA CITA':
+                    dict_patients[Datos] = input(f'Inserta {Datos}: ')
+                elif  Datos == 'ESPECIALIDAD':
+                    _index = patients.index[patients['DNI'] == DNI]
+                    list_Espec = list_(users,'ESPECIALIDAD')
+                    print('Solo hay doctores especializados en = {}'.format(list_Espec))
+                    espec = input('Que especializacion desea: ')
+                    Doct_ = users.loc[users['ESPECIALIDAD'] == f'{espec}']
+                    print(Doct_)
+                    #lis_doc = list_(Doct_,'MEDICO')
+                    #print('Estos son doctores que hay en especialización {}'.format(lis_doc))
+                    doc = input('Cual doctor: ')
+                    lis_t.append(doc)
+                    patients.at[int(_index[0]),'ESPECIALIDAD'] = espec
+                    patients.at[int(_index[0]),'MEDICO'] = doc
+                    patients.to_excel(ruta_patients,index = False) 
+    elif _patients == '':
+        User = input('Usuario: ')
+        if User != '':
+            _password = input('Ingresa tu Contraseña: ')
+        return login()
+    patients.to_excel(ruta_patients,index=False)
+
 def _register():
     global users
     global User
@@ -29,8 +76,10 @@ def _register():
         dict_User = {}
         columnas_df = columns(users)
         for Datos in columnas_df:
-            if Datos != 'ESTADO' and Datos != 'SUELDO' and Datos != 'Hora de Entrada' and Datos != 'Hora de Salida':
+            if Datos != 'ESTADO' and Datos != 'SUELDO' and Datos != 'Hora de Entrada' and Datos != 'Hora de Salida' and Datos != 'MEDICO':
                 dict_User[Datos] = input(f'Inserta {Datos}: ')
+            elif Datos == 'MEDICO':
+                dict_User[Datos] = 'Dr.' + ' '+ dict_User['NOMBRE'] +' ' + dict_User['APELLIDO']
             continue
         users = users.append(dict_User , ignore_index= True )
         users.to_excel(ruta_Usuarios ,index = False)
@@ -142,18 +191,22 @@ def _admin():
         return login()
 
 def login():
+    global reception
     global _password
     global passwordRegistration
     global User
     global users
     index_User = users.index[users['NOMBRE'] == User]
+    index_User2 = reception.index[reception['NOMBRE'] == User]
     while User != '':
         if User in list_(users,'NOMBRE') and _password == users.at[index_User[0],'CONTRASEÑAS']:
             pertain()
         elif User in list_(admin,'NOMBRE') and _password == admin.at[0,'CONTRASEÑAS']:
             _admin()
+        elif User in list_(reception, 'NOMBRE') and _password == reception.at[index_User2[0],'CONTRASEÑAS']:
+            _reception()
         else:
-            print('Para registrarse ingrese la contraseña que le ha proporcinado la empresa')
+            print('Para registrarse como trabajador ingrese la contraseña que le ha proporcinado la empresa')
             password2 = input('Contraseña: ')
             if password2 == passwordRegistration:
                 _result2 = _register()
@@ -167,8 +220,10 @@ def login():
     if User == '':
         print('Programa terminado')
         
-#format_html(users)
-User = input('Usuario: ')
-if User != '':
-    _password = input('Ingresa tu Contraseña: ')
-login()
+
+#User = input('Usuario: ')
+#if User != '':
+#    _password = input('Ingresa tu Contraseña: ')
+#login()
+#
+_reception()
