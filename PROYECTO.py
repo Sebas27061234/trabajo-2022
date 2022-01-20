@@ -85,7 +85,7 @@ def pertain():
         User = input('Usuario: ')
     return login()
 
-def format_csv(df):
+def format_html(df):
     df.to_html('Tabla.html',index=None,header=True)  
     webbrowser.open('Tabla.html', new=0, autoraise=True)
         
