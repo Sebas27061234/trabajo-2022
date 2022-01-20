@@ -87,7 +87,8 @@ def pertain():
     elif choose == '':
         print('Volviendo al inicio......')
         User = input('Usuario: ')
-        _password = input('Ingresa tu Contraseña: ')
+        if User != '':
+            _password = input('Ingresa tu Contraseña: ')
     return login()
 
 def edit_Users():
@@ -139,7 +140,7 @@ def _admin():
         User = input('Usuario: ')
         _password = input('Ingresa tu Contraseña: ')
         return login()
-        
+
 def login():
     global _password
     global passwordRegistration
@@ -151,23 +152,23 @@ def login():
             pertain()
         elif User in list_(admin,'NOMBRE') and _password == admin.at[0,'CONTRASEÑAS']:
             _admin()
+        elif User == '':
+            print('Para registrarse ingrese la contraseña que le ha proporcinado la empresa')
+            password2 = input('Contraseña: ')
+            if password2 == passwordRegistration:
+                _result2 = _register()
+                if _result2 == True:
+                    User = input('Usuario: ')
+                    _password = input('Ingresa tu Contraseña: ')
+                else:
+                    print('Finalizando programa')
+            elif password2 != '':
+                print('Contraseña Incorrecta\nFinalizando Programa....')
     if User == '':
-        print('Para registrarse ingrese la contraseña que le ha proporcinado la empresa')
-        password2 = input('Contraseña: ')
-        if password2 == passwordRegistration:
-            _result2 = _register()
-            if _result2 == True:
-                User = input('Usuario: ')
-                _password = input('Ingresa tu Contraseña: ')
-            else:
-                print('Finalizando programa')
-        elif password2 != '':
-            print('Contraseña Incorrecta\nFinalizando Programa....')
-        else:
-            print('Termina programa')
-            pass
-
+        print('Programa terminado')
+        
 #format_html(users)
 User = input('Usuario: ')
-_password = input('Ingresa tu Contraseña: ')
+if User != '':
+    _password = input('Ingresa tu Contraseña: ')
 login()
