@@ -17,6 +17,10 @@ def list_(df,nombre):
     list_filas = list(filas)
     return list_filas
 
+def format_html(df):
+    df.to_html('Tabla.html',index=None,header=True)
+    webbrowser.open('Tabla.html', new=0, autoraise=True)
+
 def _register():
     global users
     global User
@@ -85,13 +89,50 @@ def pertain():
         User = input('Usuario: ')
     return login()
 
+def edit_Users():
+    global pregunt
+    global users
+    nombre = input('Ingrese nombre del usuario: ')
+    if nombre != '':
+        list_modfi = columns(users)[10:13]
+        print('Esta es la lista de los datos que solo puede modificar {}'.format(list_modfi))
+        gg = input(f'Que columna desea modificar: ')
+        while gg in list_modfi:
+            if gg != '':
+                value_index = users.index[users['NOMBRE'] == nombre] 
+                users.at[value_index[0],gg] = input('Nueva {}: '.format(gg))
+                users.to_excel(ruta_Usuarios ,index = False) 
+                gg = input(f'Que columna desea modificar: ')
+            elif gg == '':
+                    pregunt = input('Ingrese "V" si desea ver toda la informacion de los trabajodores\nIngrese "E" si desea editar la informacion de los trabajodores\n Ingrese "A" si desea analizar: ')
+        return pregunt
+
 def format_html(df):
     df.to_html('Tabla.html',index=None,header=True)  
-    webbrowser.open('Tabla.html', new=0, autoraise=True)
-        
+    file = open('Tabla.html', 'a')
+    content = '''
+    <head>
+        <link rel="stylesheet" href="estilos.css">
+    </head>'''
+    file.write(content)
+    file.close()
+    webbrowser.open('Tabla.html',new=0, autoraise=True)
+
+def analisisDatos()
+
 def _admin():
-    y = input('Ingrese "V" si desea ver toda la informacion de los trabajodores\nIngrese "E" si desea editar la informacion de los trabajodores\n Ingrese "A" si desea analizar: ')
-    list_V = ['V','E','A']
+    global pregunt
+    global users
+    pregunt = input('Ingrese "V" si desea ver toda la informacion de los trabajodores\nIngrese "E" si desea editar la informacion de los trabajodores\n Ingrese "A" si desea analizar: ')
+    if pregunt == 'V':
+        format_html(users)
+    elif pregunt == 'E':
+        edit_Users()
+    elif pregunt == 'A':
+        analisisDatos()
+    elif pregunt == '':
+        print('Clave no correcta.....\nRetornando a INICIO....')
+        return login()
 
 
 def login():
@@ -102,7 +143,7 @@ def login():
     while User != '':
         if User in list_(users,'NOMBRE') and password == users.at[index_User[0],'CONTRASEÑAS']:
             pertain()
-        elif User in list_(admin,'NOMBRE') and password == admin.at[index_User[0],'CONTRASEÑAS']:
+        elif User in list_(admin,'NOMBRE') and password == admin.at[0,'CONTRASEÑAS']:
             _admin()
         else: 
             print('Para registrarse ingrese la contraseña que le ha proporcinado la empresa')
@@ -122,5 +163,3 @@ def login():
 User = input('Usuario: ')
 password = input('Ingresa tu Contraseña: ')
 login()
-
-   
