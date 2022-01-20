@@ -152,7 +152,7 @@ def login():
             pertain()
         elif User in list_(admin,'NOMBRE') and _password == admin.at[0,'CONTRASEÑAS']:
             _admin()
-        elif User == '':
+        else:
             print('Para registrarse ingrese la contraseña que le ha proporcinado la empresa')
             password2 = input('Contraseña: ')
             if password2 == passwordRegistration:
