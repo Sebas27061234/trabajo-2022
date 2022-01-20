@@ -24,7 +24,6 @@ def format_html(df):
 def _register():
     global users
     global User
-    print('El usuario {} no existe'.format(User))
     User_Now = input('Presione R si desea registrase: ')
     if User_Now == 'R':
         dict_User = {}
@@ -75,6 +74,7 @@ def editar():
     return choose
         
 def pertain():
+    global _password
     global User
     global users
     global choose
@@ -87,6 +87,7 @@ def pertain():
     elif choose == '':
         print('Volviendo al inicio......')
         User = input('Usuario: ')
+        _password = input('Ingresa tu Contraseña: ')
     return login()
 
 def edit_Users():
@@ -122,6 +123,8 @@ def analisisDatos():
     print('hola')
 
 def _admin():
+    global _password
+    global User
     global pregunt
     global users
     pregunt = input('Ingrese "V" si desea ver toda la informacion de los trabajodores\nIngrese "E" si desea editar la informacion de los trabajodores\n Ingrese "A" si desea analizar: ')
@@ -133,37 +136,38 @@ def _admin():
         analisisDatos()
     elif pregunt == '':
         print('Clave no correcta.....\nRetornando a INICIO....')
+        User = input('Usuario: ')
+        _password = input('Ingresa tu Contraseña: ')
         return login()
-
-
+        
 def login():
+    global _password
     global passwordRegistration
     global User
     global users
     index_User = users.index[users['NOMBRE'] == User]
     while User != '':
-        if User in list_(users,'NOMBRE') and password == users.at[index_User[0],'CONTRASEÑAS']:
+        if User in list_(users,'NOMBRE') and _password == users.at[index_User[0],'CONTRASEÑAS']:
             pertain()
-        elif User in list_(admin,'NOMBRE') and password == admin.at[0,'CONTRASEÑAS']:
+        elif User in list_(admin,'NOMBRE') and _password == admin.at[0,'CONTRASEÑAS']:
             _admin()
-        else: 
-            print('Para registrarse ingrese la contraseña que le ha proporcinado la empresa')
-            password1 = input('Ingrese la contraseña: ')
-            if password1 == passwordRegistration:
-                _result2 = _register()
-                if _result2 == True:
-                    User = input('Usuario: ')
-                    password = input('Ingresa tu Contraseña: ')
-                else:
-                    print('Finalizando programa')
-                    break
-            else:
-                print('Contraseña Incorrecta\nFinalizando Programa....')
-                break
     if User == '':
-        print('Que intentabas ingresar......\nFinalizando Programa....')
+        print('Para registrarse ingrese la contraseña que le ha proporcinado la empresa')
+        password2 = input('Contraseña: ')
+        if password2 == passwordRegistration:
+            _result2 = _register()
+            if _result2 == True:
+                User = input('Usuario: ')
+                _password = input('Ingresa tu Contraseña: ')
+            else:
+                print('Finalizando programa')
+        elif password2 != '':
+            print('Contraseña Incorrecta\nFinalizando Programa....')
+        else:
+            print('Termina programa')
+            pass
 
 #format_html(users)
 User = input('Usuario: ')
-password = input('Ingresa tu Contraseña: ')
+_password = input('Ingresa tu Contraseña: ')
 login()
