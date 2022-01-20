@@ -116,10 +116,12 @@ def login():
             _admin()
         else: 
             print('Para registrarse ingrese la contraseña que le ha proporcinado la empresa')
-            if password == passwordRegistration:
+            password1 = input('Ingrese la contraseña: ')
+            if password1 == passwordRegistration:
                 _result2 = _register()
                 if _result2 == True:
                     User = input('Usuario: ')
+                    password = input('Ingresa tu Contraseña: ')
                 else:
                     print('Finalizando programa')
                     break
@@ -129,7 +131,7 @@ def login():
     if User == '':
         print('Que intentabas ingresar......\nFinalizando Programa....')
 
-format_html(users)
+#format_html(users)
 User = input('Usuario: ')
 password = input('Ingresa tu Contraseña: ')
 login()
