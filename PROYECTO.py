@@ -451,8 +451,7 @@ def login():
     if User == '':
         print('Programa terminado')
         
-#User = input('Usuario: ')
-#if User != '':
+User = input('Usuario: ')
+if User != '':
     _password = input('Ingresa tu Contraseña: ')
-#login()
-GeneroXEdad()
+login()
