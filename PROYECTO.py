@@ -1,3 +1,4 @@
+from cProfile import label
 import pandas as pd
 import datetime as dt
 import matplotlib.pyplot as plt
@@ -205,14 +206,20 @@ def EdadXSueldo():
     plt.ylabel('SUELDO')
     plt.title('Edad por Sueldo')
     plt.show()
+def make_autopct(values):
+            def my_autopct(pct):
+                total = sum(values)
+                val = int(round(pct*total/100.0))
+                return '{p:.2f}%  ({v:d})'.format(p=pct,v=val)
+            return my_autopct
 
 def GeneroXEdad():
         MAN = users.loc[users['GENERO (Masculino/Femenino) ']=='Masculino']
         FEM = users.loc[users['GENERO (Masculino/Femenino) ']=='Femenino']
         list_sumM = MAN['EDAD'].tolist()
         list_sumF = FEM['EDAD'].tolist()
-        sumaM = sum(list_sumM)
-        sumaF = sum(list_sumF)
+        sumaM = np.mean(list_sumM)
+        sumaF = np.mean(list_sumF)
         list_G = [sumaM,sumaF]
         especialidad = list_(users,'GENERO (Masculino/Femenino) ')
         plt.style.use('_mpl-gallery-nogrid')
@@ -220,7 +227,9 @@ def GeneroXEdad():
         especialidad = especialidad
         colors = plt.get_cmap('Reds')(np.linspace(0.2, 0.7, len(x)))
         fig, ax = plt.subplots()
-        ax.pie(x, labels=especialidad,autopct="%0.1f %%",radius=1)
+        ax.pie(x, labels=especialidad,autopct=make_autopct(list_G),radius=1)
+        ax.set_title('Porcentaje de Genero por Edad')
+        plt.tight_layout()
         plt.show()
 
 def PromSueldoG():
@@ -268,7 +277,7 @@ def DosisXEdad():
     list_dosis = []
     for x in edad:
         EDAD = users.loc[users['EDAD']==x]
-        docis_Edad = EDAD['DOSIS DE VACUNA COVID'].tolist()
+        docis_Edad = EDAD['DOSIS DE VACUNA COVID(1/0)'].tolist()
         sum_docis_Edad = sum(docis_Edad)
         list_dosis.append(sum_docis_Edad)
     dosis = list_dosis
@@ -381,7 +390,6 @@ def _admin():
     global User
     global pregunt
     global users
-
     pregunt = input('Ingrese "O" si desea ver solo la informacion de un trabajador\nIngrese "V" si desea ver toda la informacion\nIngrese "E" si desea editar la informacion\nIngrese "A" si desea analizar datos\nENTER para cerrar seccion: ')
     if pregunt == 'V':
         infoUser = input('Ingrese "T" para ver toda la informacion de los trabajadores\nIngrese "P" para ver toda la informacion de los Pacientes\nIngrese "R" para ver todos los ususarios de recepcion: ')
@@ -398,7 +406,7 @@ def _admin():
         elif pregunt_3 == 'R':
              addreception()
     elif pregunt == 'A':
-        pregunt_2 = input('Ingrese "P" para analizar datos de los pacientes\nIngrese "T" si desea analizar datos de los trabajadores: ')
+        pregunt_2 = input('Ingrese "T" si desea analizar datos de los trabajadores: ')
         if pregunt_2 == 'T':
             analisisDatos()
     elif pregunt == 'O':
@@ -443,7 +451,8 @@ def login():
     if User == '':
         print('Programa terminado')
         
-User = input('Usuario: ')
-if User != '':
+#User = input('Usuario: ')
+#if User != '':
     _password = input('Ingresa tu Contraseña: ')
-login()
+#login()
+GeneroXEdad()
