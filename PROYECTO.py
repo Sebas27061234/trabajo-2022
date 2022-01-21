@@ -1,7 +1,10 @@
 import pandas as pd
 import datetime as dt
 import matplotlib.pyplot as plt
+import matplotlib
+import numpy as np
 import webbrowser
+import seaborn as sns
 ruta_Usuarios = 'Hospital.xlsx'
 ruta_UsuariosAdmin = 'CONTROLCENTER.xlsx'
 users = pd.read_excel(ruta_Usuarios)
@@ -121,14 +124,107 @@ def format_html(df,x):
 
 def look_User():
     global users
-    nameWoker =input('Ingrese el nombre del trabajador: ') 
-    one_User = users.loc[users['NOMBRE']==nameWoker]
-    format_html(one_User,'Tablaone')
-    pregunt = input('Ingrese "O" si desea ver solo la informacion de un solo trabaajor\nIngrese "V" si desea ver toda la informacion de los trabajodores\nIngrese "E" si desea editar la informacion de los trabajodores\n Ingrese "A" si desea analizar: ')
-    return pregunt
+    list_columns = columns(users)
+    filtroWoker =input('Ingrese "C" para filtrar por columna\nIngrese "N" por trabajador: ') 
+    if filtroWoker == 'C':
+        list__columns = []
+        print('Escoja una columna {}'.format(list_columns))
+        columna = input('Nombre de la Columna: ')
+        if columna in list_columns:
+            list__columns.append(columna)
+            one_User = pd.unique(users[columna])
+            _Data = pd.DataFrame(one_User,columns= list__columns)
+            format_html(_Data,'Tablaone')
+    elif filtroWoker == 'N':
+        nameWoker = input('Ingrese Nombre: ')
+        one_User = users.loc[users['NOMBRE'] == nameWoker ]
+        format_html(one_User,'Tablaone')
+
+def EdadXSueldo():
+    list_G = users['SUELDO AL MES'].tolist()
+    edad = users['EDAD'].tolist()
+    tamaño = 50*np.array(edad)
+    fig,ax2 = plt.subplots()
+    ax2.scatter(edad,list_G,s=tamaño,alpha=0.5, cmap='viridis')
+    plt.xlabel('EDAD')
+    plt.ylabel('SUELDO')
+    plt.title('Edad por Sueldo')
+    plt.show()
+
+def GeneroXEdad():
+        list_G = users['SUELDO AL MES'].tolist()
+        especialidad = users['ESPECIALIDAD'].tolist()
+        plt.style.use('_mpl-gallery-nogrid')
+        # make data
+        x = list_G
+        especialidad = especialidad
+        colors = plt.get_cmap('Reds')(np.linspace(0.2, 0.7, len(x)))
+
+        # plot
+        fig, ax = plt.subplots()
+        ax.pie(x, labels=especialidad,autopct="%0.1f %%",radius=1)
+
+        plt.show()
+
+def PromSueldoG():
+    list_G = users['SUELDO AL MES'].tolist()
+    promedioG = np.mean(list_G)
+    sns.set_theme(style="whitegrid")
+    g = sns.PairGrid(users, y_vars="SUELDO AL MES",
+                    x_vars=["GENERO (Masculino/Femenino) "],
+                    height=5, aspect=.5)
+    g.map(sns.pointplot, scale=1.3, errwidth=4, color="xkcd:plum")
+    g.set(ylim=(promedioG-1000, promedioG+1000))
+    sns.despine(fig=g.fig, left=True)
+    plt.show()
+
+def SueldoxTrabajador():
+    sns.set_theme(style="whitegrid")
+    g = sns.catplot(
+        data=users, kind="bar",
+        x="NOMBRE", y="SUELDO AL MES", hue="GENERO (Masculino/Femenino) ",
+        ci="sd", palette="dark", alpha=.6, height=6
+    )
+    g.despine(left=True)
+    g.set_axis_labels("Trabajadores", "Sueldo")
+    g.legend.set_title("")
+    plt.show()
+
+def SueldoXEspecialida():
+    list_G = users['SUELDO AL MES'].tolist()
+    especialidad = users['ESPECIALIDAD'].tolist()
+    plt.style.use('_mpl-gallery-nogrid')
+    # make data
+    x = list_G
+    especialidad = especialidad
+    colors = plt.get_cmap('Reds')(np.linspace(0.2, 0.7, len(x)))
+
+    # plot
+    fig, ax = plt.subplots()
+    ax.pie(x, labels=especialidad,autopct="%0.1f %%",radius=1)
+
+    plt.show()
+
+def DosisXEdad():
+    edad = users['EDAD'].tolist()
+    dosis = users['DOSIS DE VACUNA COVID'].tolist()
+    plt.style.use('_mpl-gallery-nogrid')
+    # make data
+    x = dosis
+    edad = edad
+    #ploty
+    fig, ax = plt.subplots()
+    ax.pie(x, labels=edad,autopct="%0.1f %%",radius=1)
+
+    plt.show()
+
+
 
 def analisisDatos():
-    print('hola')
+    pregunt = input('')
+    if pregunt == '':
+        PromSueldoG()
+
 
 def _admin():
     global _password
