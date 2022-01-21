@@ -1,4 +1,3 @@
-from cProfile import label
 import pandas as pd
 import datetime as dt
 import matplotlib.pyplot as plt
@@ -177,6 +176,17 @@ def addreception():
         dict_NewRegister[Datos]= input(f'Inserta {Datos}: ')
     receptionUser = receptionUser.append(dict_NewRegister,ignore_index=True) 
     receptionUser.to_excel(ruta_reception,index=False)  
+
+def addcolumna():
+    global users
+    nombreColumna = input('Nombre de la columna nueva: ')
+    if nombreColumna != '':
+        users[nombreColumna] = ' '
+        users.to_excel(ruta_Usuarios,index=False) 
+    else:
+        print('No ha ingresado nada.....\nVolviendo a inicio...')
+    return _admin()
+
 
 def look_User():
     global users
@@ -390,7 +400,8 @@ def _admin():
     global User
     global pregunt
     global users
-    pregunt = input('Ingrese "O" si desea ver solo la informacion de un trabajador\nIngrese "V" si desea ver toda la informacion\nIngrese "E" si desea editar la informacion\nIngrese "A" si desea analizar datos\nENTER para cerrar seccion: ')
+    pregunt = input('Ingrese "O" si desea ver solo la informacion de un trabajador\nIngrese "V" si desea ver toda la informacion'
+                    ' \nIngrese "E" si desea editar la informacion\nIngrese "A" si desea analizar datos\nENTER para cerrar seccion: ')
     if pregunt == 'V':
         infoUser = input('Ingrese "T" para ver toda la informacion de los trabajadores\nIngrese "P" para ver toda la informacion de los Pacientes\nIngrese "R" para ver todos los ususarios de recepcion: ')
         if infoUser == 'T':
@@ -400,11 +411,14 @@ def _admin():
         elif infoUser == 'R':
             format_html(receptionUser,'TablarRecepcion')
     elif pregunt == 'E':
-        pregunt_3 = input('Inserte "U" para editar informacion de un trabajador\nInserte "R" para agregar una nueva recepcion: ')
+        pregunt_3 = input('Inserte "U" para editar informacion de un trabajador\nInserte "R" para agregar un usuario en la recepcion'
+                            ' \nInsertar "O" para insertar una nueva columna: ')
         if pregunt_3 == 'U':
             edit_Users()
         elif pregunt_3 == 'R':
-             addreception()
+            addreception()
+        elif pregunt_3 == 'O':
+            addcolumna()
     elif pregunt == 'A':
         pregunt_2 = input('Ingrese "T" si desea analizar datos de los trabajadores: ')
         if pregunt_2 == 'T':
@@ -450,7 +464,9 @@ def login():
             break
     if User == '':
         print('Programa terminado')
-        
+'''....................................................................................................................
+.....................................................................................................'''
+
 User = input('Usuario: ')
 if User != '':
     _password = input('Ingresa tu Contraseña: ')
