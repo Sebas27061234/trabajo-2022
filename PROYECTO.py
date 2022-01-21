@@ -374,11 +374,6 @@ def analisisDatos():
              _password = input('Ingresa tu Contraseña: ')
         login()
 
-def analisisDatosWorkers():
-    pregunt = input('')
-    if pregunt == (''):
-        x=3
-
 def _admin():
     global receptionUser
     global reception
@@ -386,6 +381,7 @@ def _admin():
     global User
     global pregunt
     global users
+
     pregunt = input('Ingrese "O" si desea ver solo la informacion de un trabajador\nIngrese "V" si desea ver toda la informacion\nIngrese "E" si desea editar la informacion\nIngrese "A" si desea analizar datos\nENTER para cerrar seccion: ')
     if pregunt == 'V':
         infoUser = input('Ingrese "T" para ver toda la informacion de los trabajadores\nIngrese "P" para ver toda la informacion de los Pacientes\nIngrese "R" para ver todos los ususarios de recepcion: ')
@@ -405,8 +401,6 @@ def _admin():
         pregunt_2 = input('Ingrese "P" para analizar datos de los pacientes\nIngrese "T" si desea analizar datos de los trabajadores: ')
         if pregunt_2 == 'T':
             analisisDatos()
-        elif pregunt_2 == 'P':
-            analisisDatosWorkers()
     elif pregunt == 'O':
         look_User()
     elif pregunt == '':
@@ -449,7 +443,6 @@ def login():
     if User == '':
         print('Programa terminado')
         
-
 User = input('Usuario: ')
 if User != '':
     _password = input('Ingresa tu Contraseña: ')
