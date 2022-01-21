@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import matplotlib
 import numpy as np
 import webbrowser
-from pyparsing import col
 import seaborn as sns
 ruta_Usuarios = 'Hospital.xlsx'
 ruta_UsuariosAdmin = 'CONTROLCENTER.xlsx'
@@ -208,8 +207,14 @@ def EdadXSueldo():
     plt.show()
 
 def GeneroXEdad():
-        list_G = users['SUELDO AL MES'].tolist()
-        especialidad = users['ESPECIALIDAD'].tolist()
+        MAN = users.loc[users['GENERO (Masculino/Femenino) ']=='Masculino']
+        FEM = users.loc[users['GENERO (Masculino/Femenino) ']=='Femenino']
+        list_sumM = MAN['EDAD'].tolist()
+        list_sumF = FEM['EDAD'].tolist()
+        sumaM = sum(list_sumM)
+        sumaF = sum(list_sumF)
+        list_G = [sumaM,sumaF]
+        especialidad = list_(users,'GENERO (Masculino/Femenino) ')
         plt.style.use('_mpl-gallery-nogrid')
         x = list_G
         especialidad = especialidad
@@ -234,17 +239,23 @@ def SueldoxTrabajador():
     sns.set_theme(style="whitegrid")
     g = sns.catplot(
         data=users, kind="bar",
-        x="NOMBRE", y="SUELDO AL MES", hue="GENERO (Masculino/Femenino) ",
+        x="SUELDO AL MES", y="NOMBRE", hue="GENERO (Masculino/Femenino) ",
         ci="sd", palette="dark", alpha=.6, height=6)
     g.despine(left=True)
-    g.set_axis_labels("Trabajadores", "Sueldo")
+    g.set_axis_labels("Sueldo", "Trabajadores")
     g.legend.set_title("")
     plt.show()
 
 def SueldoXEspecialida():
-    list_G = users['SUELDO AL MES'].tolist()
-    especialidad = users['ESPECIALIDAD'].tolist()
-    plt.style.use('_mpl-gallery-nogrid')
+    global users
+    especialidad = list_(users,'ESPECIALIDAD')
+    list_Sueldo = []
+    for especial in especialidad:
+        especial1 = users.loc[users['ESPECIALIDAD'] == especial]
+        Sueldo_Especialidad = especial1['SUELDO AL MES'].tolist()
+        sum_sueldo_especialidad = sum(Sueldo_Especialidad)
+        list_Sueldo.append(sum_sueldo_especialidad)
+    list_G = list_Sueldo
     x = list_G
     especialidad = especialidad
     colors = plt.get_cmap('Reds')(np.linspace(0.2, 0.7, len(x)))
@@ -253,19 +264,115 @@ def SueldoXEspecialida():
     plt.show()
 
 def DosisXEdad():
-    edad = users['EDAD'].tolist()
-    dosis = users['DOSIS DE VACUNA COVID'].tolist()
+    edad = list_(users,'EDAD')
+    list_dosis = []
+    for x in edad:
+        EDAD = users.loc[users['EDAD']==x]
+        docis_Edad = EDAD['DOSIS DE VACUNA COVID'].tolist()
+        sum_docis_Edad = sum(docis_Edad)
+        list_dosis.append(sum_docis_Edad)
+    dosis = list_dosis
     plt.style.use('_mpl-gallery-nogrid')
     x = dosis
     edad = edad
     fig, ax = plt.subplots()
     ax.pie(x, labels=edad,autopct="%0.1f %%",radius=1)
+    ax.set_title('Porcentaje de Docis datas por Edad')
+    plt.tight_layout()
     plt.show()
 
+
 def analisisDatos():
-    pregunt = input('')
-    if pregunt == '':
-        PromSueldoG()
+    lista_datos = ['Edad','Genero','Sueldo','Especialidad','Dosis de Vacunas','Trabajador']
+    print('Seleccione uno de los siguientes campos {}'.format(lista_datos))
+    pregunt = input('Seleccion: ')
+    if pregunt == 'Edad':
+        list_graficos = ['Edad por Sueldo','Genero por Edad','Dosis de Vacuna por Edad']
+        print('Tiene los siguientes analisis disponibles seleccione uno {}'.format(list_graficos))
+        grafico = input('Seleccion: ')
+        if grafico == 'Edad por Sueldo':
+            EdadXSueldo()
+            analisisDatos()
+        elif grafico == 'Genero por Edad':
+            GeneroXEdad()
+            analisisDatos()
+        elif grafico == 'Dosis de Vacuna por Edad':
+            DosisXEdad()
+            analisisDatos()
+        else:
+            print('El grafico seleccionado no se encuentra disponible intentelo de nuevo')
+            analisisDatos()
+    elif pregunt == 'Genero':
+        list_graficos = ['Genero por Edad','Promedio de Sueldo por Género']
+        print('Tiene los siguientes analisis disponibles seleccione uno {}'.format(list_graficos))
+        grafico = input('Seleccion: ')
+        if grafico == 'Genero por Edad':
+            GeneroXEdad()
+            analisisDatos()
+        elif grafico == 'Promedio de Sueldo por Género':
+            PromSueldoG()
+            analisisDatos()
+        else:
+            print('El grafico seleccionado no se encuentra disponible intentelo de nuevo')
+            analisisDatos()
+    elif pregunt == 'Sueldo':
+        list_graficos = ['Edad por Sueldo','Promedio de Sueldo por Género','Sueldo por Trabajador','Sueldo por Especialida']
+        print('Tiene los siguientes analisis disponibles seleccione uno {}'.format(list_graficos))
+        grafico = input('Seleccion: ')
+        if grafico == 'Edad por Sueldo':
+            EdadXSueldo()
+            analisisDatos()
+        elif grafico == 'Promedio de Sueldo por Género':
+            PromSueldoG()
+            analisisDatos()
+        elif grafico == 'Sueldo por Trabajador':
+            SueldoxTrabajador()
+            analisisDatos()
+        elif grafico == 'Sueldo por Especialida':
+            SueldoXEspecialida()
+            analisisDatos()
+        else:
+            print('El grafico seleccionado no se encuentra disponible intentelo de nuevo')
+            analisisDatos()
+    elif pregunt == 'Especialidad':
+        list_graficos = ['Sueldo por Especialida']
+        print('Tiene los siguientes analisis disponibles seleccione uno {}'.format(list_graficos))
+        grafico = input('Seleccion: ')
+        if grafico == 'Sueldo por Especialida':
+            SueldoXEspecialida()
+            analisisDatos()
+        else:
+            print('El grafico seleccionado no se encuentra disponible intentelo de nuevo')
+            analisisDatos()
+    elif pregunt == 'Dosis de Vacunas':
+        list_graficos = ['Dosis por Edad']
+        print('Tiene los siguientes analisis disponibles seleccione uno {}'.format(list_graficos))
+        grafico = input('Seleccion: ')
+        if grafico == 'Dosis por Edad':
+            DosisXEdad()
+            analisisDatos()
+        else:
+            print('El grafico seleccionado no se encuentra disponible intentelo de nuevo')
+            analisisDatos()
+    elif pregunt == 'Trabajador':
+        list_graficos = ['Sueldo por Trabajador']
+        print('Tiene los siguientes analisis disponibles seleccione uno {}'.format(list_graficos))
+        grafico = input('Seleccion: ')
+        if grafico == 'Sueldo por Trabajador':
+            SueldoxTrabajador()
+            analisisDatos()
+        else:
+            print('El grafico seleccionado no se encuentra disponible intentelo de nuevo')
+            analisisDatos()
+    elif pregunt != lista_datos and pregunt != '':
+        print('El campo seleccionado no esta disponible intentelo nuevamente')
+        analisisDatos()
+    else:
+        print('Ningun campo seleccionado.....\nRegresando a inicio...')
+        User = input('Usuario: ')
+        if User != '':
+             _password = input('Ingresa tu Contraseña: ')
+        login()
 
 def analisisDatosWorkers():
     pregunt = input('')

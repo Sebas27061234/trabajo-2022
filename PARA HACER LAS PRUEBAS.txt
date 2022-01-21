@@ -1,8 +1,8 @@
+Trabajador:
 Jean Piere - jean24680
-recepcion:
+Recepcion:
 Paula Villanueva - pau1234
-admin:
+Admin:
 Admin02 - python2022
-
 paciente:
 Joshua Rodrigo 
