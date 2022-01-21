@@ -218,20 +218,86 @@ def DosisXEdad():
 
     plt.show()
 
-
-
 def analisisDatos():
-    pregunt = input('')
-    if pregunt == '':
-        PromSueldoG()
-
+    lista_datos = ['Edad','Genero','Sueldo','Especialidad','Dosis de Vacunas','Trabajador']
+    print('Seleccione uno de los siguientes campos {}'.format(lista_datos))
+    pregunt = input('Seleccion: ')
+    if pregunt == 'Edad':
+        list_graficos = ['Edad por Sueldo','Genero por Edad','Dosis de Vacuna por Edad']
+        print('Tiene los siguientes analisis disponibles seleccione uno {}'.format(list_graficos))
+        grafico = input('Seleccion: ')
+        if grafico == 'Edad por Sueldo':
+            EdadXSueldo()
+        elif grafico == 'Genero por Edad':
+            GeneroXEdad()
+        elif grafico == 'Dosis de Vacuna por Edad':
+            DosisXEdad()
+        else:
+            print('El grafico seleccionado no se encuentra disponible intentelo de nuevo')
+            analisisDatos()
+    elif pregunt == 'Genero':
+        list_graficos = ['Genero por Edad','Promedio de Sueldo por Género']
+        print('Tiene los siguientes analisis disponibles seleccione uno {}'.format(list_graficos))
+        grafico = input('Seleccion: ')
+        if grafico == 'Genero por Edad':
+            GeneroXEdad()
+        elif grafico == 'Promedio de Sueldo por Género':
+            PromSueldoG()
+        else:
+            print('El grafico seleccionado no se encuentra disponible intentelo de nuevo')
+            analisisDatos()
+    elif pregunt == 'Sueldo':
+        list_graficos = ['Edad por Sueldo','Promedio de Sueldo por Género','Sueldo por Trabajador','Sueldo por Especialida']
+        print('Tiene los siguientes analisis disponibles seleccione uno {}'.format(list_graficos))
+        grafico = input('Seleccion: ')
+        if grafico == 'Edad por Sueldo':
+            EdadXSueldo()
+        elif grafico == 'Promedio de Sueldo por Género':
+            PromSueldoG()
+        elif grafico == 'Sueldo por Trabajador':
+            SueldoxTrabajador()
+        elif grafico == 'Sueldo por Especialida':
+            SueldoXEspecialida()
+        else:
+            print('El grafico seleccionado no se encuentra disponible intentelo de nuevo')
+            analisisDatos()
+    elif pregunt == 'Especialidad':
+        list_graficos = ['Sueldo por Especialida']
+        print('Tiene los siguientes analisis disponibles seleccione uno {}'.format(list_graficos))
+        grafico = input('Seleccion: ')
+        if grafico == 'Sueldo por Especialida':
+            SueldoXEspecialida()
+        else:
+            print('El grafico seleccionado no se encuentra disponible intentelo de nuevo')
+            analisisDatos()
+    elif pregunt == 'Dosis de Vacunas':
+        list_graficos = ['Dosis por Edad']
+        print('Tiene los siguientes analisis disponibles seleccione uno {}'.format(list_graficos))
+        grafico = input('Seleccion: ')
+        if grafico == 'Dosis por Edad':
+            DosisXEdad()
+        else:
+            print('El grafico seleccionado no se encuentra disponible intentelo de nuevo')
+            analisisDatos()
+    elif pregunt == 'Trabajador':
+        list_graficos = ['Sueldo por Trabajador']
+        print('Tiene los siguientes analisis disponibles seleccione uno {}'.format(list_graficos))
+        grafico = input('Seleccion: ')
+        if grafico == 'Sueldo por Trabajador':
+            SueldoxTrabajador()
+        else:
+            print('El grafico seleccionado no se encuentra disponible intentelo de nuevo')
+            analisisDatos()
+    else:
+        print('El campo seleccionado no esta disponible intentelo nuevamente')
+        analisisDatos()
 
 def _admin():
     global _password
     global User
     global pregunt
     global users
-    pregunt = input('Ingrese "O" si desea ver solo la informacion de un solo trabaajor\nIngrese "V" si desea ver toda la informacion de los trabajodores\nIngrese "E" si desea editar la informacion de los trabajodores\n Ingrese "A" si desea analizar: ')
+    pregunt = input('Ingrese "O" si desea ver solo la informacion de un solo trabaajor\nIngrese "V" si desea ver toda la informacion de los trabajodores\nIngrese "E" si desea editar la informacion de los trabajodores\nIngrese "A" si desea analizar: ')
     if pregunt == 'V':
         format_html(users,'Tabla')
     elif pregunt == 'E':
@@ -273,7 +339,6 @@ def login():
     if User == '':
         print('Programa terminado')
         
-
 User = input('Usuario: ')
 if User != '':
     _password = input('Ingresa tu Contraseña: ')
