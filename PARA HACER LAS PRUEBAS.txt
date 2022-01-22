@@ -1,8 +1,14 @@
 Trabajador:
-Jean Piere - jean24680
+Jean Piere - jean246801
+
 Recepcion:
 Paula Villanueva - pau1234
+
 Admin:
 Admin02 - python2022
-paciente:
+
+Paciente:
 Joshua Rodrigo 
+
+passwordRegistration = 
+PythonBasico2022pedrorotta
