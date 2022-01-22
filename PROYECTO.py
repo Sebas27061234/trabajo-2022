@@ -216,6 +216,7 @@ def EdadXSueldo():
     plt.ylabel('SUELDO')
     plt.title('Edad por Sueldo')
     plt.show()
+
 def make_autopct(values):
             def my_autopct(pct):
                 total = sum(values)
@@ -322,26 +323,26 @@ def analisisDatos():
             print('El grafico seleccionado no se encuentra disponible intentelo de nuevo')
             analisisDatos()
     elif pregunt == 'Genero':
-        list_graficos = ['Genero por Edad','Promedio de Sueldo por Género']
+        list_graficos = ['Genero por Edad','Promedio de Sueldo por Genero']
         print('Tiene los siguientes analisis disponibles seleccione uno {}'.format(list_graficos))
         grafico = input('Seleccion: ')
         if grafico == 'Genero por Edad':
             GeneroXEdad()
             analisisDatos()
-        elif grafico == 'Promedio de Sueldo por Género':
+        elif grafico == 'Promedio de Sueldo por Genero':
             PromSueldoG()
             analisisDatos()
         else:
             print('El grafico seleccionado no se encuentra disponible intentelo de nuevo')
             analisisDatos()
     elif pregunt == 'Sueldo':
-        list_graficos = ['Edad por Sueldo','Promedio de Sueldo por Género','Sueldo por Trabajador','Sueldo por Especialida']
+        list_graficos = ['Edad por Sueldo','Promedio de Sueldo por Genero','Sueldo por Trabajador','Sueldo por Especialida']
         print('Tiene los siguientes analisis disponibles seleccione uno {}'.format(list_graficos))
         grafico = input('Seleccion: ')
         if grafico == 'Edad por Sueldo':
             EdadXSueldo()
             analisisDatos()
-        elif grafico == 'Promedio de Sueldo por Género':
+        elif grafico == 'Promedio de Sueldo por Genero':
             PromSueldoG()
             analisisDatos()
         elif grafico == 'Sueldo por Trabajador':
@@ -471,3 +472,4 @@ User = input('Usuario: ')
 if User != '':
     _password = input('Ingresa tu Contraseña: ')
 login()
+
