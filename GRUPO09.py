@@ -454,7 +454,8 @@ def login():
                 _result2 = _register()
                 if _result2 == True:
                     User = input('Usuario: ')
-                    _password = input('Ingresa tu Contraseña: ')
+                    if User != '':
+                        _password = input('Ingresa tu Contraseña: ')
                 else:
                     print('Finalizando programa')
             else:
