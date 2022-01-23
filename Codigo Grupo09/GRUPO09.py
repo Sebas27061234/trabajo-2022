@@ -5,10 +5,10 @@ import matplotlib
 import numpy as np
 import webbrowser
 import seaborn as sns
-ruta_Usuarios = 'Hospital.xlsx'
-ruta_UsuariosAdmin = 'CONTROLCENTER.xlsx'
-ruta_Patients = 'Base_datos_pacientes.xlsx'
-ruta_reception = 'RECEPCION.xlsx'
+ruta_Usuarios = 'Codigo Grupo09\Hospital.xlsx'
+ruta_UsuariosAdmin = 'Codigo Grupo09\CONTROLCENTER.xlsx'
+ruta_Patients = 'Codigo Grupo09\Base_datos_pacientes.xlsx'
+ruta_reception = 'Codigo Grupo09\RECEPCION.xlsx'
 users = pd.read_excel(ruta_Usuarios)
 admin = pd.read_excel(ruta_UsuariosAdmin)
 reception = pd.read_excel(ruta_Patients)
@@ -429,7 +429,8 @@ def _admin():
     elif pregunt == '':
         print('Retornando a INICIO....')
         User = input('Usuario: ')
-        _password = input('Ingresa tu Contraseña: ')
+        if User != '':
+            _password = input('Ingresa tu Contraseña: ')
         return login()
 
 def login():
